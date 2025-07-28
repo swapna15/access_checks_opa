@@ -1,11 +1,11 @@
-package authz
+package authz.ec2
 
-default allow = false
+default ec2_allow = false
 
 # Allow access only if user role is 'st-access-role'
 allow if {
   print("Evaluating access for input:", input)
-  get_user_role(input, "st-access-role")
+  get_user_role_ec2(input, "ec2-access-role")
 }
 
 # Extracts and verifies role from either AWS or Azure identity

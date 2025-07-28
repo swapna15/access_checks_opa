@@ -1,6 +1,10 @@
 package authz_test  # Use separate test package from policy
 
-import data.authz
+import data.s3.authz
+
+test_input_schema_empty if {
+    !data.authz 
+}
 
 # Test the allow rule with hardcoded valid input
 test_allow_rule_exists if {
