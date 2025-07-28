@@ -1,23 +1,21 @@
-package validate.input
+package validate.azure
 
-default valid_input = false
-
-valid_input {
-    input.user
-    input.user.id
-    input.user.role
-    input.resource
-    input.resource.type
-    input.resource.id
-    input.action
+errors[msg] if {
+    not input.identity.claims.sub
+    msg := "Missing 'sub' claim"
 }
 
-valid_input {
-    input.action
-    input.resource
-    input.identity
-    input.identity.type
-    input.identity.claims
-    input.identity.claims.roles
-    input.identity.claims.name
+errors[msg] if {
+    not input.identity.claims.aud
+    msg := "Missing 'aud' claim"
+}
+
+errors[msg] if {
+    not input.identity.claims.iss
+    msg := "Missing 'iss' claim"
+}
+
+errors[msg] if {
+    not input.identity.claims.roles
+    msg := "Missing roles claim"
 }

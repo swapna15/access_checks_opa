@@ -1,21 +1,23 @@
 package validate.s3
 
-errors[msg] {
-    not input.method
-    msg := "Missing HTTP method"
+errors[msg] if {
+    print("S3 checks")
+    not input.action
+    msg := "Missing action"
 }
 
-errors[msg] {
-    not input.path
+errors[msg] if {
+    not input.resource
     msg := "Missing resource path"
 }
 
-errors[msg] {
-    not input.headers["Authorization"]
-    msg := "Missing Authorization header"
+errors[msg] if {
+    not input.user
+    msg := "Missing user details"
 }
 
-errors[msg] {
-    not input.identity.accountId
-    msg := "Missing identity.accountId"
+errors[msg] if {
+    print("S3 checks")
+    not input.user.role
+    msg := "Missing user role"
 }

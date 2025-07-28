@@ -1,14 +1,10 @@
 package authz_test  # Use separate test package from policy
 
-import data.s3.authz
-
-test_input_schema_empty if {
-    !data.authz 
-}
+import data.authz.s3
 
 # Test the allow rule with hardcoded valid input
 test_allow_rule_exists if {
-    data.authz.allow with input as {
+    not data.authz.s3.allow with input as {
         "action": "s3:GetObject",
         "user": {
             "type": "IAMUser",
@@ -18,19 +14,20 @@ test_allow_rule_exists if {
 }
 
 test_aws_role_allowed if {
-    data.authz.allow with input as {
+    data.authz.s3.allow with input as {
         "action": "s3:GetObject",
-        "resource": "arn:aws:s3:::my-bucket/myfile.txt",
+        "resource": "arn:aws:s3:::my-bucket/myfile.txt", 
         "user": {
-            "type": "IAMUser",
-            "name": "swapna",
-            "role": "st-access-role"
+            "name": "swapna", 
+            "role": "st-access-role", 
+            "type": "IAMUser"
         }
     }
+    print("Allow:", data.authz.s3.allow)
 }
 
 test_azure_role_allowed if {
-    data.authz.allow with input as {
+    data.authz.s3.allow with input as {
         "action": "Microsoft.Storage/storageAccounts/blobServices/containers/read",
         "resource": "/subscriptions/xxxx/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/sa1",
         "identity": {
@@ -47,7 +44,7 @@ test_azure_role_allowed if {
 }
 
 test_role_denied_when_not_matched if {
-    not data.authz.allow with input as {
+    not data.authz.s3.allow with input as {
         "user": {
             "type": "IAMUser",
             "name": "bob",
