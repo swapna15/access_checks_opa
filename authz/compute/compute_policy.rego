@@ -9,7 +9,7 @@ allow if {
 }
 
 # Extracts and verifies role from either AWS or Azure identity
-get_user_role(input_args, expected_role) if {
+get_user_role_ec2(input_args, expected_role) if {
   input_args.user.role == expected_role
   print("Matched role in input.user:", input.user.role)
 } else if {
